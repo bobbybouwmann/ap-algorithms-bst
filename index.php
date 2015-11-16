@@ -11,3 +11,5 @@ $tree->insert(10);
 $tree->insert(8);
 $tree->insert(24);
 $tree->delete(8);
+
+var_dump($tree);
