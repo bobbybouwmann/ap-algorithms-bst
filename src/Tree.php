@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App;
 
 class Tree {
 
-	private $topNode = null;
+	private $root = null;
 
 	private $count = 0;
 
@@ -13,54 +13,40 @@ class Tree {
 		$node = new Node($data);
 
 		// Check if this is the first node, if so we set the first node
-		if ( $this->topNode === null) {
-			$this->topNode = &$node;
+		if ( $this->root === null) {
+			$this->root = &$node;
 
-		// Else create a new node under the topNode
+		// Else create a new node under the root
 		} else {
-			$current = $this->topNode;
+			$current = $this->root;
 
-			while ($current !== null) {
+			if ($data < $current->data) {
+				$node->level++;
 
-				// Check if we need to store the node on the left
-				if ($data < $current->data) {
-					$node->level++;
-
-					if ($current->left !== null) {
-						$current = $current->left;
-					} else {
-						$current->left = $node;
-					}
-
-				// Check if we need to store the node on the right
-				} else if ($data > $current->data) {
-					$node->level++;
-
-					if ($current->right !== NULL) {
-						$current = $current->right;
-					} else {
-						$current->right = $node;
-					}
-
-				// Do nothing and return
+				if ($current->left !== null) {
+					$current->left->insert($node);
 				} else {
-					return;
+					$current->left = $node;
+				}
+			} else {
+				if ($current->right !== null) {
+					$current->right->insert($node);
+				} else {
+					$current->right = $node;
 				}
 			}
 		}
-
 		$this->count++;
-
 	}
 
 	public function delete($data = null)
 	{
 		$direction = null;
 		$parent = null;
-		$current = $this->topNode;
+		$current = $this->root;
 
 		while ($current !== null) {
-		
+
 			// Check if we need to go left
 			if ($data < $current->data) {
 				if ($current->left !== null) {
@@ -87,13 +73,13 @@ class Tree {
 					if ($parent !== null && $direction !== null) {
 						$parent->$direction = null;
 					} else {
-						$this->topNode = null;
+						$this->root = null;
 					}
 				} else if ($current->right !== null && ($current->left === null || $current->right->left === null)) {
 					if ($parent !== null && $direction !== null) {
 						$parent->$direction = $current->right;
 					} else {
-						$this->topNode = $current->right;
+						$this->root = $current->right;
 					}
 				} else {
 					$current->data = $this->popMostLeftNode($current->right);
@@ -108,13 +94,13 @@ class Tree {
 
 	/**
 	 * Search for the node based on the given data
-	 * 
+	 *
 	 * @param  $data
 	 * @return Node
 	 */
 	public function search($data = null)
 	{
-		$current = $this->topNode;
+		$current = $this->root;
 
 		while ($current !== null) {
 
@@ -123,7 +109,7 @@ class Tree {
 				if ($current->left != null) {
 					$current = $current->left;
 				} else {
-					return false;
+					return null;
 				}
 
 			// Check if we need to go the right
@@ -131,7 +117,7 @@ class Tree {
 				if ($current->right !== null) {
 					$current = $current->right;
 				} else {
-					return FALSE;
+					return null;
 				}
 
 			// Return the current position
