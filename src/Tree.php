@@ -20,29 +20,32 @@ class Tree {
 		} else {
 			$current = $this->topNode;
 
-			// Check if we need to store the node on the left
-			if ($data < $current->data) {
-				$node->level++;
+			while ($current !== null) {
 
-				if ($current->left !== null) {
-					$current = $current->left;
+				// Check if we need to store the node on the left
+				if ($data < $current->data) {
+					$node->level++;
+
+					if ($current->left !== null) {
+						$current = $current->left;
+					} else {
+						$current->left = $node;
+					}
+
+				// Check if we need to store the node on the right
+				} else if ($data > $current->data) {
+					$node->level++;
+
+					if ($current->right !== NULL) {
+						$current = $current->right;
+					} else {
+						$current->right = $node;
+					}
+
+				// Do nothing and return
 				} else {
-					$current->left = $node;
+					return;
 				}
-
-			// Check if we need to store the node on the right
-			} else if ($data > $current->data) {
-				$node->level++;
-
-				if ($current->right !== NULL) {
-					$current = $current->right;
-				} else {
-					$current->right = $node;
-				}
-
-			// Do nothing and return
-			} else {
-				return;
 			}
 		}
 
@@ -56,47 +59,50 @@ class Tree {
 		$parent = null;
 		$current = $this->topNode;
 
-		// Check if we need to go left
-		if ($data < $current->data) {
-			if ($current->left !== null) {
-				$parent = $current;
-				$direction = 'left';
-				$current = $current->left;
-			} else {
-				return false;
-			}
-
-		// Check if we need to go right
-		} else if ($data > $current->data) {
-			if ($current->right !== null) {
-				$parent = $current;
-				$direction = 'right';
-				$current = $current->right;
-			} else {
-				return false;
-			}
-
-		// Delete the element
-		} else {
-			if ($current->left === null && $current->right === null) {
-				if ($parent !== null && $direction !== null) {
-					$parent->$direction = null;
+		while ($current !== null) {
+		
+			// Check if we need to go left
+			if ($data < $current->data) {
+				if ($current->left !== null) {
+					$parent = $current;
+					$direction = 'left';
+					$current = $current->left;
 				} else {
-					$this->topNode = null;
+					return false;
 				}
-			} else if ($current->right !== null && ($current->left === null || $current->right->left === null)) {
-				if ($parent !== null && $direction !== null) {
-					$parent->$direction = $current->right;
+
+			// Check if we need to go right
+			} else if ($data > $current->data) {
+				if ($current->right !== null) {
+					$parent = $current;
+					$direction = 'right';
+					$current = $current->right;
 				} else {
-					$this->topNode = $current->right;
+					return false;
 				}
+
+			// Delete the element
 			} else {
-				$current->data = $this->popMostLeftNode($current->right);
+				if ($current->left === null && $current->right === null) {
+					if ($parent !== null && $direction !== null) {
+						$parent->$direction = null;
+					} else {
+						$this->topNode = null;
+					}
+				} else if ($current->right !== null && ($current->left === null || $current->right->left === null)) {
+					if ($parent !== null && $direction !== null) {
+						$parent->$direction = $current->right;
+					} else {
+						$this->topNode = $current->right;
+					}
+				} else {
+					$current->data = $this->popMostLeftNode($current->right);
+				}
+
+				$this->count--;
+
+				return true;
 			}
-
-			$this->count--;
-
-			return true;
 		}
 	}
 
@@ -110,25 +116,28 @@ class Tree {
 	{
 		$current = $this->topNode;
 
-		// Check if we need to go the left
-		if ($data < $current->data) {
-			if ($current->left != null) {
-				$current = $current->left;
-			} else {
-				return false;
-			}
+		while ($current !== null) {
 
-		// Check if we need to go the right
-		} else if ($data > $current->data) {
-			if ($current->right !== null) {
-				$current = $current->right;
-			} else {
-				return FALSE;
-			}
+			// Check if we need to go the left
+			if ($data < $current->data) {
+				if ($current->left != null) {
+					$current = $current->left;
+				} else {
+					return false;
+				}
 
-		// Return the current position
-		} else {
-			return $current;
+			// Check if we need to go the right
+			} else if ($data > $current->data) {
+				if ($current->right !== null) {
+					$current = $current->right;
+				} else {
+					return FALSE;
+				}
+
+			// Return the current position
+			} else {
+				return $current;
+			}
 		}
 	}
 
