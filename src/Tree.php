@@ -15,26 +15,9 @@ class Tree {
 		// Check if this is the first node, if so we set the first node
 		if ( $this->root === null) {
 			$this->root = &$node;
-
 		// Else create a new node under the root
 		} else {
-			$current = $this->root;
-
-			if ($data < $current->data) {
-				$node->level++;
-
-				if ($current->left !== null) {
-					$current->left->insert($node);
-				} else {
-					$current->left = $node;
-				}
-			} else {
-				if ($current->right !== null) {
-					$current->right->insert($node);
-				} else {
-					$current->right = $node;
-				}
-			}
+			$this->root->insert($node);
 		}
 		$this->count++;
 	}
