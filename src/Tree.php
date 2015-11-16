@@ -4,9 +4,9 @@ namespace App;
 
 class Tree {
 
-	private $root = null;
+	public $root = null;
 
-	private $count = 0;
+	public $count = 0;
 
 	public function insert($data = null)
 	{

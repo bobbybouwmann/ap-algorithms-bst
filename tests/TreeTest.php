@@ -1,6 +1,6 @@
 <?php 
 
-use App\Node;
+use App\Tree;
 
 class TreeTest extends PHPUnit_Framework_TestCase {
 
@@ -10,7 +10,7 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		
 		$tree->insert($value = 12);
 
-		$this->assertEqual($tree->root->data, $value);
+		$this->assertEquals($tree->root->data, $value);
 	}
 
 }
