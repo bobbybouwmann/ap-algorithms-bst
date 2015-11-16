@@ -24,54 +24,8 @@ class Tree {
 
 	public function delete($data = null)
 	{
-		$direction = null;
-		$parent = null;
-		$current = $this->root;
-
-		while ($current !== null) {
-
-			// Check if we need to go left
-			if ($data < $current->data) {
-				if ($current->left !== null) {
-					$parent = $current;
-					$direction = 'left';
-					$current = $current->left;
-				} else {
-					return false;
-				}
-
-			// Check if we need to go right
-			} else if ($data > $current->data) {
-				if ($current->right !== null) {
-					$parent = $current;
-					$direction = 'right';
-					$current = $current->right;
-				} else {
-					return false;
-				}
-
-			// Delete the element
-			} else {
-				if ($current->left === null && $current->right === null) {
-					if ($parent !== null && $direction !== null) {
-						$parent->$direction = null;
-					} else {
-						$this->root = null;
-					}
-				} else if ($current->right !== null && ($current->left === null || $current->right->left === null)) {
-					if ($parent !== null && $direction !== null) {
-						$parent->$direction = $current->right;
-					} else {
-						$this->root = $current->right;
-					}
-				} else {
-					$current->data = $this->popMostLeftNode($current->right);
-				}
-
+		if ($this->root !== null && ($this->root->delete($data))) {
 				$this->count--;
-
-				return true;
-			}
 		}
 	}
 
