@@ -90,4 +90,16 @@ class Node {
 			}
 		}
 	}
+
+	public function search($data) {
+		if ($data < $this->data) { // element is in the left tree
+			return $this->left !== null ? $this->left->search($data) : null;
+		} else { // element is either this node or in our right tree
+			if ($this->data === $data) { // we have found our node.
+				return $this;
+			} else {
+				return $this->right !== null ? $this->right->search($data) : null;
+			}
+		}
+	}
 }

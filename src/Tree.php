@@ -6,8 +6,6 @@ class Tree {
 
 	public $root = null;
 
-	public $count = 0;
-
 	public function insert($data = null)
 	{
 		$node = new Node($data);
@@ -19,17 +17,13 @@ class Tree {
 		} else {
 			$this->root->insert($node);
 		}
-		$this->count++;
 	}
 
 	public function delete($data = null)
 	{
-		if ($this->root->delete($data)) {
-			$this->root = null;
-		};
-		/*if ($this->root !== null && ($this->root->delete($data))) {
-				$this->count--;
-		}*/
+		if ($this->root !== null && ($this->root->delete($data))) {
+				$this->root = null;
+		}
 	}
 
 	/**
@@ -40,51 +34,7 @@ class Tree {
 	 */
 	public function search($data = null)
 	{
-		$current = $this->root;
-
-		while ($current !== null) {
-
-			// Check if we need to go the left
-			if ($data < $current->data) {
-				if ($current->left != null) {
-					$current = $current->left;
-				} else {
-					return null;
-				}
-
-			// Check if we need to go the right
-			} else if ($data > $current->data) {
-				if ($current->right !== null) {
-					$current = $current->right;
-				} else {
-					return null;
-				}
-
-			// Return the current position
-			} else {
-				return $current;
-			}
-		}
-	}
-
-	public function count()
-	{
-		return $this->count;
-	}
-
-	private function popMostLeftNode(&$node) {
-		$parent = null;
-		$current = $node;
-
-		while ($current->left !== null) {
-			$parent = $current;
-			$current = $current->left;
-		}
-
-		$parent->left = nul;
-		$data = $current->data;
-
-		return $data;
+		return $this->root !== null ? $this->root->search($data) : null;
 	}
 
 }
