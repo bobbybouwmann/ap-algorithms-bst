@@ -24,9 +24,12 @@ class Tree {
 
 	public function delete($data = null)
 	{
-		if ($this->root !== null && ($this->root->delete($data))) {
+		if ($this->root->delete($data)) {
+			$this->root = null;
+		};
+		/*if ($this->root !== null && ($this->root->delete($data))) {
 				$this->count--;
-		}
+		}*/
 	}
 
 	/**
