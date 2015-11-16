@@ -228,4 +228,47 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$this->assertNull($tree->root->right->right->left);
 	}
 
+	public function testSimpleSearch()
+	{
+		$tree = new Tree();
+
+		$tree->insert($value = 12);
+
+		$this->assertEquals($tree->search($value), $tree->root);
+	}
+
+	public function testSearchThroughLeaves()
+	{
+		$tree = new Tree();
+
+		$tree->insert($valueOne = 12);
+		$tree->insert($valueTwo = 24);
+		$tree->insert($valueThree = 6);
+
+		$this->assertEquals($tree->search($valueOne), $tree->root);
+		$this->assertEquals($tree->search($valueTwo), $tree->root->right);
+		$this->assertEquals($tree->search($valueThree), $tree->root->left);
+	}
+
+	public function testSearchThroughLotsOfLeaves()
+	{
+		$tree = new Tree();
+
+		$tree->insert($valueOne = 12);
+		$tree->insert($valueTwo = 18);
+		$tree->insert($valueThree = 24);
+		$tree->insert($valueFour = 16);
+		$tree->insert($valueFive = 22);
+		$tree->insert($valueSix = 28);
+
+		$this->assertEquals($tree->search($valueOne), $tree->root);
+		$this->assertEquals($tree->search($valueTwo), $tree->root->right);
+		$this->assertEquals($tree->search($valueThree), $tree->root->right->right);
+		$this->assertEquals($tree->search($valueFour), $tree->root->right->left);
+		$this->assertEquals($tree->search($valueFive), $tree->root->right->right->left);
+		$this->assertEquals($tree->search($valueSix), $tree->root->right->right->right);
+		$this->assertEquals($valueSix, $tree->search($valueThree)->right->data);
+		$this->assertEquals($valueFive, $tree->search($valueThree)->left->data);
+	}
+
 }
