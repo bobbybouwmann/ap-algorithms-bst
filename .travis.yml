@@ -10,4 +10,6 @@ php:
   - 7.0
   - hhvm
 
-script: vendor/bin/phpunit
+script: 
+ - composer update --prefer-source --no-interaction --prefer-stable
+ - vendor/bin/phpunit
