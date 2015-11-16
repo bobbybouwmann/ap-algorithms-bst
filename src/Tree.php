@@ -37,31 +37,7 @@ class Tree {
 	 */
 	public function search($data = null)
 	{
-		$current = $this->root;
-
-		while ($current !== null) {
-
-			// Check if we need to go the left
-			if ($data < $current->data) {
-				if ($current->left != null) {
-					$current = $current->left;
-				} else {
-					return null;
-				}
-
-			// Check if we need to go the right
-			} else if ($data > $current->data) {
-				if ($current->right !== null) {
-					$current = $current->right;
-				} else {
-					return null;
-				}
-
-			// Return the current position
-			} else {
-				return $current;
-			}
-		}
+		return $this->root !== null ? $this->root->search($data) : null;
 	}
 
 	public function count()
