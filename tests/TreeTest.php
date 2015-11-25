@@ -200,9 +200,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
         $tree->delete($valueTwo);
 
-        $this->assertEquals($valueThree, $tree->root->data);
-        $this->assertEquals($valueOne, $tree->root->left->data);
-        $this->assertEquals($valueFour, $tree->root->right->data);
+        $this->assertEquals($valueOne, $tree->root->data);
+        $this->assertEquals($valueThree, $tree->root->right->data);
+        $this->assertEquals($valueFour, $tree->root->right->left->data);
     }
 
 
@@ -219,11 +219,11 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
         $tree->delete($valueTwo);
 
-        $this->assertEquals($valueThree, $tree->root->data);
+        $this->assertEquals($valueFour, $tree->root->data);
         $this->assertEquals($valueOne, $tree->root->left->data);
-        $this->assertEquals($valueFour, $tree->root->left->right->data);
-        $this->assertEquals($valueSix, $tree->root->right->data);
+        $this->assertEquals($valueThree, $tree->root->right->data);
         $this->assertEquals($valueFive, $tree->root->right->left->data);
+        $this->assertEquals($valueSix, $tree->root->right->right->data);
     }
 
     public function testSimpleSearch()
@@ -259,12 +259,12 @@ class TreeTest extends PHPUnit_Framework_TestCase {
         $tree->insert($valueFive = 22);
         $tree->insert($valueSix = 28);
 
-        $this->assertEquals($tree->search($valueThree), $tree->root);
-        $this->assertEquals($tree->search($valueSix), $tree->root->right);
-        $this->assertEquals($tree->search($valueTwo), $tree->root->left);
-        $this->assertEquals($tree->search($valueOne), $tree->root->left->left);
-        $this->assertEquals($tree->search($valueFive), $tree->root->left->right);
-        $this->assertEquals($tree->search($valueFour), $tree->root->left->left->right);
+        $this->assertEquals($tree->search($valueTwo), $tree->root);
+        $this->assertEquals($tree->search($valueThree), $tree->root->right);
+        $this->assertEquals($tree->search($valueOne), $tree->root->left);
+        $this->assertEquals($tree->search($valueFive), $tree->root->right->left);
+        $this->assertEquals($tree->search($valueSix), $tree->root->right->right);
+        $this->assertEquals($tree->search($valueFour), $tree->root->left->right);
         $this->assertEquals($valueOne, $tree->search($valueTwo)->left->data);
     }
 

@@ -52,22 +52,20 @@ class Node
     public function insert($node)
     {
         if ($node->data < $this->data) {
-            $this->value++;
             if ($this->left !== null) {
                 $this->left->insert($node);
             } else {
                 $this->left = $node;
             }
         } else {
-            $this->value--;
             if ($this->right !== null) {
                 $this->right->insert($node);
             } else {
                 $this->right = $node;
             }
         }
-
-        if ($this->getBalancedValue() >= 2) { // if difference is >= 2 we want to balance our tree
+        $value = $this->getBalancedValue();
+        if ($value >= 2) { // if difference is >= 2 we want to balance our tree
             // balancing our tree is getting our left child and putting it on our place
             // and we put our current node to our right place.
 
@@ -84,9 +82,7 @@ class Node
             $this->delete($this->left->data);
 
             $this->data = $copyLeftValue; // replace the current node by our temp left value.
-            $this->value--; // we balanced our tree
-
-        } else if ($this->getBalancedValue() <= -2) {
+        } else if ($value <= -2) {
             $ownCopyNode = new Node($this->data);
 
             if ($this->left !== null) {
@@ -100,7 +96,6 @@ class Node
             $this->delete($this->right->data);
 
             $this->data = $copyRightValue; // replace the current node by our temp left value.
-            $this->value++; // we balanced our tree
         }
     }
 
@@ -117,7 +112,6 @@ class Node
         if ($data < $this->data) {
             if ($this->left !== null) {
                 // delete from left tree
-                $this->value--;
                 $res = $this->left->delete($data);
 
                 // our left element needs to be removed
@@ -162,9 +156,7 @@ class Node
             } else {
                 if ($this->right !== null) {
                     // delete from right tree
-                    $this->value++;
                     $res = $this->right->delete($data);
-
                     if ($res && $this->right->right === null && $this->right->left === null) {
                         $this->right = null;
                     }
@@ -195,16 +187,18 @@ class Node
         }
     }
 
-    protected function getBalancedValue()
+    private function getBalancedValue()
     {
-        $value = $this->value;
+        $value = 0;
 
         if ($this->left) {
-            $value += $this->left->value;
+            $value++;
+            $value += $this->left->getBalancedValue();
         }
 
         if ($this->right) {
-            $value += $this->right->value;
+            $value--;
+            $value += $this->right->getBalancedValue();
         }
 
         return $value;
