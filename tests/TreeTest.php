@@ -58,9 +58,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$tree->insert($valueTwo = 8);
 		$tree->insert($valueThree = 4);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->left->data);
-		$this->assertEquals($valueThree, $tree->root->left->left->data);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueThree, $tree->root->left->data);
+		$this->assertEquals($valueOne, $tree->root->right->data);
 	}
 
 	public function testTreeWithTwoLeavesRight()
@@ -71,9 +71,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$tree->insert($valueTwo = 24);
 		$tree->insert($valueThree = 48);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->right->data);
-		$this->assertEquals($valueThree, $tree->root->right->right->data);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueThree, $tree->root->right->data);
+		$this->assertEquals($valueOne, $tree->root->left->data);
 	}
 
 	public function testThreeWithThreeLeavesRightRightLeft()
@@ -85,10 +85,10 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$tree->insert($valueThree = 48);
 		$tree->insert($valueFour = 18);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->right->data);
-		$this->assertEquals($valueThree, $tree->root->right->right->data);
-		$this->assertEquals($valueFour, $tree->root->right->left->data);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueThree, $tree->root->right->data);
+		$this->assertEquals($valueOne, $tree->root->left->data);
+		$this->assertEquals($valueFour, $tree->root->left->right->data);
 	}
 
 	public function testThreeWithThreeLeavesLeftLeftRight()
@@ -100,10 +100,10 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$tree->insert($valueThree = 4);
 		$tree->insert($valueFour = 10);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->left->data);
-		$this->assertEquals($valueThree, $tree->root->left->left->data);
-		$this->assertEquals($valueFour, $tree->root->left->right->data);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueThree, $tree->root->left->data);
+		$this->assertEquals($valueOne, $tree->root->right->data);
+		$this->assertEquals($valueFour, $tree->root->right->left->data);
 	}
 
 	public function testThreeWithSomeBigNumbers()
@@ -115,10 +115,10 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$tree->insert($valueThree = 4);
 		$tree->insert($valueFour = 18);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->left->data);
-		$this->assertEquals($valueThree, $tree->root->left->left->data);
-		$this->assertEquals($valueFour, $tree->root->right->data);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueThree, $tree->root->left->data);
+		$this->assertEquals($valueOne, $tree->root->right->data);
+		$this->assertEquals($valueFour, $tree->root->right->right->data);
 	}
 
 	public function testDeleteRootNode()
@@ -169,9 +169,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
 		$tree->delete($valueThree);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->left->data);
-		$this->assertNull($tree->root->left->left);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueOne, $tree->root->right->data);
+		$this->assertNull($tree->root->left);
 	}
 
 	public function testDeleteRightRightNode()
@@ -184,9 +184,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
 		$tree->delete($valueThree);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueTwo, $tree->root->right->data);
-		$this->assertNull($tree->root->right->right);
+		$this->assertEquals($valueTwo, $tree->root->data);
+		$this->assertEquals($valueOne, $tree->root->left->data);
+		$this->assertNull($tree->root->right);
 	}
 
 	public function testDeleteNodeWithSingleLeaves()
@@ -200,10 +200,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
 		$tree->delete($valueTwo);
 
-		$this->assertEquals($valueOne, $tree->root->data);
-		$this->assertEquals($valueThree, $tree->root->right->data);
-		$this->assertEquals($valueFour, $tree->root->right->left->data);
-		$this->assertNull($tree->root->right->right);
+		$this->assertEquals($valueThree, $tree->root->data);
+		$this->assertEquals($valueOne, $tree->root->left->data);
+		$this->assertEquals($valueFour, $tree->root->right->data);
 	}
 
 
@@ -220,12 +219,11 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
 		$tree->delete($valueTwo);
 
-		$this->assertEquals($valueOne, $tree->root->data, $valueOne);
-		$this->assertEquals($valueThree, $tree->root->right->data);
-		$this->assertEquals($valueFive, $tree->root->right->left->data);
-		$this->assertEquals($valueFour, $tree->root->right->left->left->data);
-		$this->assertEquals($valueSix, $tree->root->right->right->data);
-		$this->assertNull($tree->root->right->right->left);
+		$this->assertEquals($valueThree, $tree->root->data);
+		$this->assertEquals($valueOne, $tree->root->left->data);
+		$this->assertEquals($valueFour, $tree->root->left->right->data);
+        $this->assertEquals($valueSix, $tree->root->right->data);
+        $this->assertEquals($valueFive, $tree->root->right->left->data);
 	}
 
 	public function testSimpleSearch()
@@ -261,14 +259,13 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 		$tree->insert($valueFive = 22);
 		$tree->insert($valueSix = 28);
 
-		$this->assertEquals($tree->search($valueOne), $tree->root);
-		$this->assertEquals($tree->search($valueTwo), $tree->root->right);
-		$this->assertEquals($tree->search($valueThree), $tree->root->right->right);
-		$this->assertEquals($tree->search($valueFour), $tree->root->right->left);
-		$this->assertEquals($tree->search($valueFive), $tree->root->right->right->left);
-		$this->assertEquals($tree->search($valueSix), $tree->root->right->right->right);
-		$this->assertEquals($valueSix, $tree->search($valueThree)->right->data);
-		$this->assertEquals($valueFive, $tree->search($valueThree)->left->data);
+		$this->assertEquals($tree->search($valueThree), $tree->root);
+		$this->assertEquals($tree->search($valueSix), $tree->root->right);
+		$this->assertEquals($tree->search($valueTwo), $tree->root->left);
+		$this->assertEquals($tree->search($valueOne), $tree->root->left->left);
+        $this->assertEquals($tree->search($valueFive), $tree->root->left->right);
+		$this->assertEquals($tree->search($valueFour), $tree->root->left->left->right);
+		$this->assertEquals($valueOne, $tree->search($valueTwo)->left->data);
 	}
 
 }
