@@ -64,8 +64,8 @@ class Node
                 $this->right = $node;
             }
         }
-
-        if ($this->getBalancedValue() >= 2) { // if difference is >= 2 we want to balance our tree
+        $value = $this->getBalancedValue();
+        if ($value >= 2) { // if difference is >= 2 we want to balance our tree
             // balancing our tree is getting our left child and putting it on our place
             // and we put our current node to our right place.
 
@@ -82,7 +82,7 @@ class Node
             $this->delete($this->left->data);
 
             $this->data = $copyLeftValue; // replace the current node by our temp left value.
-        } else if ($this->getBalancedValue() <= -2) {
+        } else if ($value <= -2) {
             $ownCopyNode = new Node($this->data);
 
             if ($this->left !== null) {
@@ -187,17 +187,17 @@ class Node
         }
     }
 
-    protected function getBalancedValue()
+    private function getBalancedValue()
     {
         $value = 0;
 
         if ($this->left) {
-            $value--;
+            $value++;
             $value += $this->left->getBalancedValue();
         }
 
         if ($this->right) {
-            $value++;
+            $value--;
             $value += $this->right->getBalancedValue();
         }
 
