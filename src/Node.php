@@ -32,6 +32,8 @@ class Node
      */
     public $right = null;
 
+    public $value = 0;
+
     /**
      * Create the Node with the given data.
      *
@@ -50,19 +52,50 @@ class Node
     public function insert($node)
     {
         if ($node->data < $this->data) {
-            $node->level++;
-
+            $this->value++;
             if ($this->left !== null) {
                 $this->left->insert($node);
             } else {
                 $this->left = $node;
             }
         } else {
+            $this->value--;
             if ($this->right !== null) {
                 $this->right->insert($node);
             } else {
                 $this->right = $node;
             }
+        }
+        if ($this->value >= 2) { // if difference is >= 2 we want to balance our tree
+            // balancing our tree is getting our left child and putting it on our place
+            // and we put our current node to our right place.
+
+            $ownCopyNode = new Node($this->data);
+            if ($this->right !== null) {
+                $ownCopyNode.insert($this->right);
+            }
+            $this->right = $ownCopyNode; // we replaced our right and we moved us one down
+
+            $copyLeftValue = $this->left->$data; // temp store our left value, because we are removing that node
+            // get rid of our left value
+            $this->delete($this->left->$data);
+
+            $this->data = $copyLeftValue; // replace the current node by our temp left value.
+            $this->value--; // we balanced our tree
+
+        } else if ($this->vale <= -2) {
+            $ownCopyNode = new Node($this->data);
+            if ($this->left !== null) {
+                $ownCopyNode.insert($this->left);
+            }
+            $this->left = $ownCopyNode; // we replaced our left and we moved us one down
+
+            $copyRightValue = $this->right->$data; // temp store our left value, because we are removing that node
+            // get rid of our left value
+            $this->delete($this->right->$data);
+
+            $this->data = $copyRightValue; // replace the current node by our temp left value.
+            $this->value++; // we balanced our tree
         }
     }
 
@@ -81,8 +114,10 @@ class Node
                 // delete from left tree
                 $res = $this->left->delete($data);
 
+                // our left element needs to be removed
                 if ($res && $this->left->right === null && $this->left->left === null) {
                     $this->left = null;
+                    $this->value--;
                 }
             }
 
@@ -126,6 +161,7 @@ class Node
 
                     if ($res && $this->right->right === null && $this->right->left === null) {
                         $this->right = null;
+                        $this->value++;
                     }
                 }
 
