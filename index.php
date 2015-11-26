@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 include 'vendor/autoload.php';
 
@@ -6,10 +6,39 @@ use App\Tree;
 
 $tree = new Tree;
 
-$tree->insert(12);
+function printTree($node, $indent, $prefix) {
+    $indentStr = " ";
+
+    $printStr = "";
+    for ($i=0; $i < $indent; $i++) {
+        $printStr = $printStr . $indentStr;
+    }
+    echo $printStr .  $prefix . " value: " . $node->data . "\n";
+    $indent++;
+    if ($node->left) {
+        printTree($node->left, $indent, "left: ");
+    }
+    if ($node->right) {
+        printTree($node->right, $indent, "right: ");
+    }
+}
+
 $tree->insert(10);
+
+printTree($tree->root, 0, "root");
+echo "--------- \n";
+$tree->insert(10);
+
+printTree($tree->root, 0, "root");
+echo "--------- \n";
 $tree->insert(8);
-$tree->insert(24);
+
+printTree($tree->root, 0, "root");
+echo "--------- \n";
+$tree->insert(4);
+
+printTree($tree->root, 0, "root");
+echo "--------- \n";
 $tree->delete(8);
 
-var_dump($tree);
+printTree($tree->root, 0, "root");
