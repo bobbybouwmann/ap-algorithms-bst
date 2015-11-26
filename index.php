@@ -7,7 +7,7 @@ use App\Tree;
 $tree = new Tree;
 
 function printTree($node, $indent, $prefix) {
-    $indentStr = " ";
+    $indentStr = "    ";
 
     $printStr = "";
     for ($i=0; $i < $indent; $i++) {
@@ -23,26 +23,13 @@ function printTree($node, $indent, $prefix) {
     }
 }
 
-$tree->insert(10);
+$tree->insert(5);
 
 printTree($tree->root, 0, "root");
 echo "--------- \n";
-$tree->insert(10);
+$tree->insert(3);
 
-printTree($tree->root, 0, "root");
-echo "--------- \n";
-$tree->insert(8);
-
-printTree($tree->root, 0, "root");
-echo "--------- \n";
-$tree->insert(7);
-
-printTree($tree->root, 0, "root");
-echo "--------- \n";
-$tree->insert(6);
 printTree($tree->root, 0, "root");
 echo "--------- \n";
 $tree->insert(4);
-
-
 printTree($tree->root, 0, "root");

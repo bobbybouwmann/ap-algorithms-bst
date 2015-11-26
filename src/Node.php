@@ -9,7 +9,7 @@ class Node
      *
      * @var int
      */
-    public $level = 1;
+    public $level = 0;
 
     /**
      * The data of the node.
@@ -64,39 +64,56 @@ class Node
                 $this->right = $node;
             }
         }
+        $this->balance();
+    }
+
+    public function balance() {
         $value = $this->getBalancedValue();
-        if ($value >= 2) { // if difference is >= 2 we want to balance our tree
-            // balancing our tree is getting our left child and putting it on our place
-            // and we put our current node to our right place.
 
-            $ownCopyNode = new Node($this->data);
-
-            if ($this->right !== null) {
-                $ownCopyNode->insert($this->right);
+        if ($value > 1) {
+            if ($this->left->left !== null) {
+                $this->rotateRight();
+            } else {
+                $this->left->rotateLeft();
+                $this->rotateRight();
             }
 
-            $this->right = $ownCopyNode; // we replaced our right and we moved us one down
-
-            $copyLeftValue = $this->left->data; // temp store our left value, because we are removing that node
-            // get rid of our left value
-            $this->delete($this->left->data);
-
-            $this->data = $copyLeftValue; // replace the current node by our temp left value.
-        } else if ($value <= -2) {
-            $ownCopyNode = new Node($this->data);
-
-            if ($this->left !== null) {
-                $ownCopyNode->insert($this->left);
+        } else if ($value < -1) {
+            if ($this->right->right !== null) {
+                $this->rotateLeft();
+            } else {
+                $this->left->rotateRight();
+                $this->rotateLeft();
             }
-
-            $this->left = $ownCopyNode; // we replaced our left and we moved us one down
-
-            $copyRightValue = $this->right->data; // temp store our left value, because we are removing that node
-            // get rid of our left value
-            $this->delete($this->right->data);
-
-            $this->data = $copyRightValue; // replace the current node by our temp left value.
         }
+    }
+
+    public function rotateLeft() {
+        // copy our node
+        $ownCopyNode = new Node($this->data);
+
+        // Set the references to potential child nodes correctly
+        $ownCopyNode->right = $this->right->left;
+        $ownCopyNode->left = $this->left;
+
+        // Make us our left node, so we have rotated left
+        $this->data = $this->right->data;
+        $this->right = $this->right->right;
+        $this->left = $ownCopyNode;
+    }
+
+    public function rotateRight() {
+        // copy our node
+        $ownCopyNode = new Node($this->data);
+
+        // Set the references to potential child nodes correctly
+        $ownCopyNode->left = $this->left->right;
+        $ownCopyNode->right = $this->right;
+
+        // Make us our left node, so we have rotated left
+        $this->data = $this->left->data;
+        $this->left = $this->left->left;
+        $this->right = $ownCopyNode;
     }
 
     /**
@@ -191,16 +208,17 @@ class Node
     {
         $value = 0;
 
-        if ($this->left) {
+        $nodeComp = $this->left;
+        while ($nodeComp !== null) {
             $value++;
-            $value += $this->left->getBalancedValue();
+            $nodeComp = $nodeComp->left ? $nodeComp->left : $nodeComp->right;
         }
 
-        if ($this->right) {
+        $nodeComp = $this->right;
+        while ($nodeComp !== null) {
             $value--;
-            $value += $this->right->getBalancedValue();
+            $nodeComp = $nodeComp->left ? $nodeComp->left : $nodeComp->right;
         }
-
         return $value;
     }
 }
