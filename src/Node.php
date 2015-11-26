@@ -82,7 +82,7 @@ class Node
             if ($this->right->right !== null) {
                 $this->rotateLeft();
             } else {
-                $this->left->rotateRight();
+                $this->right->rotateRight();
                 $this->rotateLeft();
             }
         }
