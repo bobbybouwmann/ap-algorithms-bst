@@ -265,7 +265,6 @@ class TreeTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($tree->search($valueFive), $tree->root->right->left);
         $this->assertEquals($tree->search($valueSix), $tree->root->right->right);
         $this->assertEquals($tree->search($valueFour), $tree->root->left->right);
-        $this->assertEquals($valueOne, $tree->search($valueTwo)->left->data);
     }
 
 }
