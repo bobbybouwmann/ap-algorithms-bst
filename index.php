@@ -35,10 +35,14 @@ $tree->insert(8);
 
 printTree($tree->root, 0, "root");
 echo "--------- \n";
-$tree->insert(4);
+$tree->insert(7);
 
 printTree($tree->root, 0, "root");
 echo "--------- \n";
-$tree->delete(8);
+$tree->insert(6);
+printTree($tree->root, 0, "root");
+echo "--------- \n";
+$tree->insert(4);
+
 
 printTree($tree->root, 0, "root");
