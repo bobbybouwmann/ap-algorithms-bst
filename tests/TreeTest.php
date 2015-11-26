@@ -200,9 +200,9 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
         $tree->delete($valueTwo);
 
-        $this->assertEquals($valueOne, $tree->root->data);
+        $this->assertEquals($valueFour, $tree->root->data);
         $this->assertEquals($valueThree, $tree->root->right->data);
-        $this->assertEquals($valueFour, $tree->root->right->left->data);
+        $this->assertEquals($valueOne, $tree->root->left->data);
     }
 
 
@@ -219,11 +219,11 @@ class TreeTest extends PHPUnit_Framework_TestCase {
 
         $tree->delete($valueTwo);
 
-        $this->assertEquals($valueFour, $tree->root->data);
+        $this->assertEquals($valueThree, $tree->root->data);
         $this->assertEquals($valueOne, $tree->root->left->data);
-        $this->assertEquals($valueThree, $tree->root->right->data);
-        $this->assertEquals($valueFive, $tree->root->right->left->data);
-        $this->assertEquals($valueSix, $tree->root->right->right->data);
+        $this->assertEquals($valueSix, $tree->root->right->data);
+        $this->assertEquals($valueFour, $tree->root->left->right->data);
+        $this->assertEquals($valueFive, $tree->root->left->right->right->data);
     }
 
     public function testSimpleSearch()
